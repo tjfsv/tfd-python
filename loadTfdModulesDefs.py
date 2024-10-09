@@ -1,11 +1,11 @@
 weaponStatValuetests = [
-    'Priority'
-    'Firearm Atk',
+    'Firearm ATK',
     'Fire Rate',
-    'Firearm Critial Hit Rate',
+    'Firearm Critical Hit Rate',
+    'Firearm Critical Hit Damage',
     'Weak Point Damage',
     'Rounds Per Magazine',
-    'Reload Time Modifier',
+    'Reload Time',
 ]
 
 moduleInfoToKeep = [

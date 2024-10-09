@@ -1,10 +1,11 @@
 weaponInfoToKeep = [
+    'weapon_name',
     'weapon_rounds_type',
 ]
 
 statIdsDict = {
     '105000023':'Fire Rate',
-    '105000021':'Rounder Per Magazine',
+    '105000021':'Rounds Per Magazine',
     '105000095':'Reload Time',
     '105000030':'Firearm Critical Hit Rate',
     '105000031':'Firearm Critical Hit Damage',
