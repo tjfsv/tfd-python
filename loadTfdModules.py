@@ -3,51 +3,47 @@ import re
 import loadTfdModulesDefs as defs
 import utils
 
-metadata_folder = 'metadata'
-f = open( metadata_folder + '/module.json', 'r')
-moduleList = json.load(f)
-f.close()
+def loadTfdModules():
+    # TODO Handle ultimate mods, Enhancement mods, Priority mods
+    def parseWeaponStatValue(mod):
+        modEffects = {}
 
-def getNumberFromString(stringWithNumber):
-    if stringWithNumber.count('.') > 0:
-        numStr = re.findall(r'[0-9]+.[0-9]+', stringWithNumber)
-    else:
-        numStr = re.findall(r'[0-9]+', stringWithNumber)
-    numStr = float(numStr[0])
-    if stringWithNumber.count('-'):
-        numStr = numStr * -1
-    if stringWithNumber.count('%'):
-        numStr = numStr / 100
-    return numStr
+        if mod['module_tier'] == 'Ultimate':
+            return modEffects
+        elif 'Enhancement' in mod['module_name']:
+            return modEffects
+        elif 'Priority' in mod['module_name']:
+            return modEffects
+        
+        statValueStrS = mod['module_stat'][-1]['value']
+        for s in statValueStrS.split(','):
+            for key in defs.weaponStatValuetests:
+                if key.lower() in s.lower():
+                    modEffects[utils.formatDictStr(key)] = utils.getNumberFromString(s)
+        return modEffects
 
-def parseWeaponStatValue(mod):
-    modEffects = {}
-
-    if mod['module_tier'] == 'Ultimate':
-        return modEffects
-    elif 'Enhancement' in mod['module_name']:
-        return modEffects
-    elif 'Priority' in mod['module_name']:
-        return modEffects
+    moduleList = utils.getDictFromJson('metadata/module.json')
+    modDict = dict()
     
-    statValueStrS = mod['module_stat'][-1]['value']
-    for s in statValueStrS.split(','):
-        for key in defs.weaponStatValuetests:
-            if key.lower() in s.lower():
-                modEffects[utils.formatDictStr(key)] = getNumberFromString(s)
-    return modEffects
+    for mod in moduleList:
+        if mod['module_class'] == 'Descendant':
+            pass
+        else:
+            effect = parseWeaponStatValue(mod)
+            if len(effect) > 0:
+                moduleClassStr = utils.formatDictStr(mod['module_class'])
+                if moduleClassStr not in modDict:
+                    modDict[moduleClassStr] = []
+                a = {}
+                for modInfo in defs.moduleInfoToKeep:
+                    a[utils.formatDictStr(modInfo)] = utils.formatDictStr(mod[modInfo])
+                a[utils.formatDictStr('module_effect')] = effect
+                modDict[moduleClassStr].append(a)
+    return modDict
 
-modListNew = list()
-modDict = dict()
-for mod in moduleList:
-    modMaxLevelStatValue = mod['module_stat'][-1]['value']
-    if mod['module_class'] == 'Descendant':
-        pass
-    else:
-        effect = parseWeaponStatValue(mod)
-        if len(effect) > 0:
-            asdf = utils.formatDictStr(mod['module_class'])
-            if asdf not in modDict:
-                modDict[asdf] = {}
-            modListNew.append(mod | {'module_effect':effect})
-pass
+def main():
+    modulesDict = loadTfdModules()
+    pass
+
+if __name__ == '__main__':
+    main()

@@ -1,29 +1,31 @@
 weaponStatValuetests = [
+    'Priority'
     'Firearm Atk',
     'Fire Rate',
     'Firearm Critial Hit Rate',
     'Weak Point Damage',
     'Rounds Per Magazine',
-    'Reload Time Modifier'
+    'Reload Time Modifier',
 ]
 
-Elements = [
+moduleInfoToKeep = [
+    'module_name',
+    'module_type',
+    'module_tier',
+    'module_socket_type',
+]
+
+AttributeTypes = [
     'Chill',
     'Toxic',
     'Non-Attribute',
     'Fire',
-    'Electric'
+    'Electric',
 ]
 
 SkillTypes = [
     'Dimension',
     'Fusion',
     'Singular',
-    'Tech'
-]
-
-modMetadataToKeep = [
-    'name',
-    'tier',
-    'socket_type',
+    'Tech',
 ]
