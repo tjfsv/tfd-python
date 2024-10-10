@@ -1,4 +1,5 @@
 import math
+import copy
 
 import loadTfdModules
 import loadTfdWeapons
@@ -43,23 +44,18 @@ def main():
     weaponsDict = loadTfdWeapons.loadTfdWeapons()
     weapon = weaponsDict['ThunderCage']
     modsOfInterest = weaponModulesDict[weapon['WeaponRoundsType']]
-    
-    modList = [
-        modsOfInterest['ActionAndReaction'],
-        modsOfInterest['ConcentrationPriority'],
-        modsOfInterest['ExpandWeaponCharge'],
-        modsOfInterest['FireRateUp'],
-        modsOfInterest['InsightFocus'],
-        modsOfInterest['RiflingReinforcement'],
-        modsOfInterest['BetterInsight'],
-        modsOfInterest['BetterConcentration'],
-        modsOfInterest['MagazineCompulsive'],
-               ]
-    
-    print(weaponDamageCalc(weapon, modList))
 
+    modList = []
+    evaluationMetric = 'AvgFirearmDps'
     for i in range(10):
-        pass
+        dps = weaponDamageCalc(weapon, modList)[evaluationMetric]
+        newDpsMax = 0
+        bestModName = None
+        for modName, mod in modsOfInterest.items():
+            newDps = weaponDamageCalc(weapon, modList + [mod])[evaluationMetric]
+            if newDps > dps:
+                bestModName = modName
+        modList.append(modsOfInterest[bestModName])
     pass
 
 if __name__ == '__main__':
